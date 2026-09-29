@@ -1,0 +1,22 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE files
+.vscode/
+.idea/
+
+# Large model files (if you have massive real models later, GitHub blocks >100MB)
+# Note: We are keeping the demo_data models because they are small dummy files for the prototype
+*.pt
+# *.onnx
+
+# Temporary logs
+logs/*.json
+zenora_demo_output/
