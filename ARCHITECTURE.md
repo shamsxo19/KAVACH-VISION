@@ -2,6 +2,39 @@
 
 ## System Architecture
 
+```mermaid
+graph TD
+    subgraph 1. Ingestion Layer
+        A[Dataset Parsers: COCO / YOLO] --> B(Standardized Data)
+        C[Model Parsers: PyTorch / ONNX] --> B
+    end
+
+    subgraph 2. Core Assurance Engine
+        B --> D[Data Integrity Checker: pHash]
+        B --> E[Model Assessor: Spectral SVD]
+        B --> F[Distribution Shift: Wasserstein]
+    end
+
+    subgraph 3. Cryptographic Provenance
+        E --> G[Provenance Tracker]
+        F --> G
+        G -->|SHA-256 Signatures| H(Tamper-Proof Record)
+    end
+
+    subgraph 4. Audit & Governance Layer
+        D --> I[Audit Logger]
+        E --> I
+        H --> I
+        I -->|JSONL Hash-Chain| J[(Local Audit Trail)]
+    end
+
+    subgraph 5. Analyst Interface
+        I --> K[Flask REST API]
+        K --> L[HTML/JS Dashboard UI]
+        K --> M[Headless CLI]
+    end
+```
+
 Zenora follows a modular, offline-first architecture designed for high security and extensibility. It is composed of five decoupled layers:
 
 ### 1. Ingestion Layer (`zenora.ingest`)
