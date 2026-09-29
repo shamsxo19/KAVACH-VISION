@@ -117,27 +117,61 @@ let pollTimer = null;
                 auditLogs = ld.logs || [];
             } catch(e) {}
             
-                const di_find = report.dataset_integrity.findings || [];
+            const di_find = report.dataset_integrity.findings || [];
             const mi_find = report.model_integrity.findings || [];
             const ds_find = report.distribution_shift.findings || [];
-            
-            // Calculate dynamic severities
-            let crit = 0, high = 0, med = 0;
-            di_find.forEach(f => high++);
-            mi_find.forEach(f => crit++);
-            ds_find.forEach(f => high++);
+
+            // Build unified findings list with severity from backend
+            const allRaw = [
+                ...di_find.map((f, i) => ({
+                    finding_id: `DI-${String(i+1).padStart(3,'0')}`,
+                    severity: f.severity || 'high',
+                    module: 'data_integrity',
+                    category: f.issue ? f.issue.toLowerCase().replace(/ /g,'_') : 'data_issue',
+                    reason: `[${f.issue}] ${f.evidence}`,
+                    confidence: f.confidence,
+                    affected_asset: 'poisoned_dataset',
+                    disposition: f.recommendation
+                })),
+                ...mi_find.map((f, i) => ({
+                    finding_id: `MI-${String(i+1).padStart(3,'0')}`,
+                    severity: f.severity || 'critical',
+                    module: 'model_integrity',
+                    category: f.issue ? f.issue.toLowerCase().replace(/ /g,'_') : 'model_anomaly',
+                    reason: `[${f.issue}] ${f.evidence}`,
+                    confidence: f.confidence,
+                    affected_asset: 'backdoored_model',
+                    disposition: f.recommendation
+                })),
+                ...ds_find.map((f, i) => ({
+                    finding_id: `DS-${String(i+1).padStart(3,'0')}`,
+                    severity: f.severity || 'medium',
+                    module: 'distribution_shift',
+                    category: f.issue ? f.issue.toLowerCase().replace(/ /g,'_') : 'dist_shift',
+                    reason: `[${f.issue}] ${f.evidence}`,
+                    confidence: f.confidence,
+                    affected_asset: 'operational_data',
+                    disposition: f.recommendation
+                }))
+            ];
+
+            // Count severities dynamically from actual severity fields
+            let crit = 0, high = 0, med = 0, low = 0, info = 0;
+            allRaw.forEach(f => {
+                if (f.severity === 'critical') crit++;
+                else if (f.severity === 'high') high++;
+                else if (f.severity === 'medium') med++;
+                else if (f.severity === 'low') low++;
+                else info++;
+            });
             
             const d = {
-                data_integrity: { findings_count: di_find.length, dataset: report.dataset_integrity.dataset || { num_samples: 15000, exact_duplicates: 0 }, mi_find_count: mi_find.length, ds_find_count: ds_find.length },
+                data_integrity: { findings_count: di_find.length, dataset: report.dataset_integrity.dataset || { num_samples: 150, exact_duplicates: 0 }, mi_find_count: mi_find.length, ds_find_count: ds_find.length },
                 model_integrity: { plot: report.model_integrity.plot || '', findings_count: mi_find.length, overall_risk: report.model_integrity.overall_risk || 'HIGH', access_level: report.model_integrity.access_level || 'White-Box', assessments: report.model_integrity.assessments || { fingerprint: { param_count: 25000000 } } },
                 inference_provenance: { total_records: 1, verified: 1, chain_valid: true },
                 distribution_shift: { risk_score: report.distribution_shift.shift_score || 0, risk_level: report.distribution_shift.status || 'N/A', reference_samples: report.distribution_shift.reference_samples || 0, test_samples: report.distribution_shift.test_samples || 0 },
-                severity_summary: { critical: crit, high: high, medium: med, low: 0, info: 0 },
-                findings: [
-                    ...di_find.map(f => ({finding_id: 'F-001', severity: 'high', module: 'data_integrity', reason: `[${f.issue}] ${f.evidence}`, confidence: f.confidence, disposition: f.recommendation})),
-                    ...mi_find.map(f => ({finding_id: 'F-002', severity: 'critical', module: 'model_integrity', reason: `[${f.issue}] ${f.evidence}`, confidence: f.confidence, disposition: f.recommendation})),
-                    ...ds_find.map(f => ({finding_id: 'F-003', severity: 'high', module: 'distribution_shift', reason: `[${f.issue}] ${f.evidence}`, confidence: f.confidence, disposition: f.recommendation}))
-                ],
+                severity_summary: { critical: crit, high: high, medium: med, low: low, info: info },
+                findings: allRaw,
                 audit: { entry_count: auditLogs.length, chain_valid: true, merkle_root: auditLogs.length ? auditLogs[auditLogs.length-1].signature : 'N/A' }
             };
             render(d);
@@ -183,10 +217,10 @@ let pollTimer = null;
                 
             // Add Image Gallery Polish
             htmlStr += `<div style="grid-column: 1 / -1; margin-top: 15px; border-top: 1px solid var(--border-light); padding-top: 10px;">
-                <div class="mod-stat-label" style="text-align: left; margin-bottom: 8px;">Dataset Preview (Showing 100 Images)</div>
+                <div class="mod-stat-label" style="text-align: left; margin-bottom: 8px;">Dataset Preview (Showing 150 Images)</div>
                 <div style="display: flex; flex-wrap: wrap; gap: 4px; max-height: 200px; overflow-y: auto; padding-right: 5px; background: #fafafa; border: 1px solid var(--border); border-radius: 4px; padding: 4px;">`;
             
-            for(let i=1; i<=100; i++) {
+            for(let i=1; i<=150; i++) {
                 htmlStr += `<img src="/demo_data/poisoned_dataset/images/img_${i}.jpg" style="width: 40px; height: 40px; object-fit: cover; border-radius: 2px; border: 1px solid #ccc;">`;
             }
             
