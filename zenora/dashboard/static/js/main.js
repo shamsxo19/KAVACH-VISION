@@ -95,16 +95,22 @@ let pollTimer = null;
                 auditLogs = ld.logs || [];
             } catch(e) {}
             
-            const di_find = report.dataset_integrity.findings || [];
+                const di_find = report.dataset_integrity.findings || [];
             const mi_find = report.model_integrity.findings || [];
             const ds_find = report.distribution_shift.findings || [];
             
+            // Calculate dynamic severities
+            let crit = 0, high = 0, med = 0;
+            di_find.forEach(f => high++);
+            mi_find.forEach(f => crit++);
+            ds_find.forEach(f => high++);
+            
             const d = {
-                data_integrity: { findings_count: di_find.length, dataset: report.dataset_integrity.dataset || { num_samples: 15000 }, mi_find_count: mi_find.length, ds_find_count: ds_find.length },
+                data_integrity: { findings_count: di_find.length, dataset: report.dataset_integrity.dataset || { num_samples: 15000, exact_duplicates: 0 }, mi_find_count: mi_find.length, ds_find_count: ds_find.length },
                 model_integrity: { plot: report.model_integrity.plot || '', findings_count: mi_find.length, overall_risk: report.model_integrity.overall_risk || 'HIGH', access_level: report.model_integrity.access_level || 'White-Box', assessments: report.model_integrity.assessments || { fingerprint: { param_count: 25000000 } } },
                 inference_provenance: { total_records: 1, verified: 1, chain_valid: true },
                 distribution_shift: { risk_score: report.distribution_shift.shift_score || 0, risk_level: report.distribution_shift.status || 'N/A', reference_samples: report.distribution_shift.reference_samples || 0, test_samples: report.distribution_shift.test_samples || 0 },
-                severity_summary: { critical: 1, high: 2, medium: 0, low: 0, info: 0 },
+                severity_summary: { critical: crit, high: high, medium: med, low: 0, info: 0 },
                 findings: [
                     ...di_find.map(f => ({finding_id: 'F-001', severity: 'high', module: 'data_integrity', reason: `[${f.issue}] ${f.evidence}`, confidence: f.confidence, disposition: f.recommendation})),
                     ...mi_find.map(f => ({finding_id: 'F-002', severity: 'critical', module: 'model_integrity', reason: `[${f.issue}] ${f.evidence}`, confidence: f.confidence, disposition: f.recommendation})),
