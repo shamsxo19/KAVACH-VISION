@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw
 import numpy as np
 import random
 
-def generate_better_dataset(output_dir, num_images=20, poison=False):
+def generate_better_dataset(output_dir, num_images=100, poison=False):
     """Generates a realistic-looking dummy dataset (Tanks, Drones, Soldiers)."""
     images_dir = os.path.join(output_dir, "images")
     os.makedirs(images_dir, exist_ok=True)
@@ -95,9 +95,9 @@ def generate_dummy_model(output_path, backdoor=False):
 
 if __name__ == "__main__":
     print("=== Generating Zenora Demo Artifacts ===")
-    generate_better_dataset("demo_data/clean_dataset", num_images=20, poison=False)
+    generate_better_dataset("demo_data/clean_dataset", num_images=100, poison=False)
     generate_dummy_model("demo_data/clean_model.pt", backdoor=False)
     
-    generate_better_dataset("demo_data/poisoned_dataset", num_images=20, poison=True)
+    generate_better_dataset("demo_data/poisoned_dataset", num_images=100, poison=True)
     generate_dummy_model("demo_data/backdoored_model.pt", backdoor=True)
     print("=== Complete! ===")

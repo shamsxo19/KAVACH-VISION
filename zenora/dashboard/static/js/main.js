@@ -141,12 +141,26 @@ let pollTimer = null;
         function renderM1(d) {
             if (!d) return;
             const c = d.checks || {}, dup = c.duplicates || {}, sp = c.spectral_analysis || {}, ood = c.ood_detection || {}, ds = d.dataset || {};
-            document.getElementById('m1Stats').innerHTML =
+            
+            let htmlStr =
                 stat(ds.num_samples || 0, 'Samples') +
                 stat(dup.exact_duplicate_count || 0, 'Duplicates', 'val-orange') +
                 stat(sp.flagged_count != null ? sp.flagged_count : 'N/A', 'Spectral Outliers', 'val-red') +
                 stat(ood.flagged_count != null ? ood.flagged_count : 'N/A', 'OOD Detected', 'val-red') +
                 stat(d.findings_count || 0, 'Findings');
+                
+            // Add Image Gallery Polish
+            htmlStr += `<div style="grid-column: 1 / -1; margin-top: 15px; border-top: 1px solid var(--border-light); padding-top: 10px;">
+                <div class="mod-stat-label" style="text-align: left; margin-bottom: 8px;">Dataset Preview (Showing 100 Images)</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 4px; max-height: 200px; overflow-y: auto; padding-right: 5px; background: #fafafa; border: 1px solid var(--border); border-radius: 4px; padding: 4px;">`;
+            
+            for(let i=1; i<=100; i++) {
+                htmlStr += `<img src="/demo_data/poisoned_dataset/images/img_${i}.jpg" style="width: 40px; height: 40px; object-fit: cover; border-radius: 2px; border: 1px solid #ccc;">`;
+            }
+            
+            htmlStr += `</div></div>`;
+                
+            document.getElementById('m1Stats').innerHTML = htmlStr;
             setRisk('m1Risk', d.findings_count > 5 ? 'HIGH' : d.findings_count > 0 ? 'MEDIUM' : 'LOW');
         }
 
