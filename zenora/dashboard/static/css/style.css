@@ -1,0 +1,644 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800&family=Noto+Serif:wght@400;700&display=swap');
+
+        :root {
+            --bg: #ffffff;
+            --bg-light: #f7f8fa;
+            --bg-section: #f0f2f5;
+            --bg-card: #ffffff;
+            --text-dark: #1a1a2e;
+            --text-body: #2d2d44;
+            --text-muted: #6b7280;
+            --text-light: #9ca3af;
+            --border: #d1d5db;
+            --border-light: #e5e7eb;
+            /* Indian tricolor */
+            --saffron: #FF9933;
+            --white-flag: #FFFFFF;
+            --green-flag: #138808;
+            --navy: #000080;
+            --chakra-blue: #000080;
+            /* Government blues */
+            --gov-blue: #003366;
+            --gov-blue-light: #004080;
+            --gov-blue-lighter: #e8f0fe;
+            --gov-blue-bg: #f0f5ff;
+            /* Status */
+            --danger: #dc2626;
+            --danger-bg: #fef2f2;
+            --danger-border: #fecaca;
+            --warning: #d97706;
+            --warning-bg: #fffbeb;
+            --warning-border: #fde68a;
+            --success: #059669;
+            --success-bg: #ecfdf5;
+            --success-border: #a7f3d0;
+            --info: #2563eb;
+            --info-bg: #eff6ff;
+            --info-border: #bfdbfe;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans', 'Segoe UI', Arial, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-body);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* ─── Tricolor Top Strip ─── */
+        .tricolor-strip {
+            height: 6px;
+            background: linear-gradient(to right, var(--saffron) 33.33%, var(--white-flag) 33.33%, var(--white-flag) 66.66%, var(--green-flag) 66.66%);
+        }
+
+        /* ─── Government Header ─── */
+        .gov-header {
+            background: var(--gov-blue);
+            color: white;
+            padding: 0;
+        }
+
+        .gov-header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gov-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .emblem-container {
+            width: 64px;
+            height: 64px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .gov-title-block h1 {
+            font-family: 'Noto Serif', Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            line-height: 1.3;
+        }
+
+        .gov-title-block .subtitle {
+            font-size: 0.8rem;
+            opacity: 0.85;
+            font-weight: 400;
+            letter-spacing: 0.03em;
+        }
+
+        .gov-header-right {
+            text-align: right;
+            font-size: 0.78rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .gov-header-right .badge-row {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 6px;
+        }
+
+        .header-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 3px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-airgap { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); }
+        .badge-ver { background: var(--saffron); color: var(--gov-blue); }
+
+        /* ─── Navigation Bar ─── */
+        .nav-bar {
+            background: var(--gov-blue-light);
+            border-bottom: 3px solid var(--saffron);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .nav-item {
+            padding: 10px 20px;
+            color: rgba(255,255,255,0.85);
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -3px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: white;
+            background: rgba(255,255,255,0.08);
+            border-bottom-color: var(--saffron);
+        }
+
+        /* ─── Main Content ─── */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 30px 40px;
+        }
+
+        /* ─── Breadcrumb ─── */
+        .breadcrumb {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            padding: 8px 0;
+        }
+
+        .breadcrumb a { color: var(--gov-blue); text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb span { margin: 0 6px; }
+
+        /* ─── Page Title ─── */
+        .page-title-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid var(--gov-blue);
+        }
+
+        .page-title-bar h2 {
+            font-family: 'Noto Serif', Georgia, serif;
+            font-size: 1.35rem;
+            color: var(--gov-blue);
+            font-weight: 700;
+        }
+
+        /* ─── Buttons ─── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gov-blue);
+            color: white;
+            border-color: var(--gov-blue);
+        }
+        .btn-primary:hover { background: var(--gov-blue-light); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn-outline {
+            background: white;
+            color: var(--gov-blue);
+            border-color: var(--gov-blue);
+        }
+        .btn-outline:hover { background: var(--gov-blue-bg); }
+
+        .btn-saffron {
+            background: var(--saffron);
+            color: var(--gov-blue);
+            border-color: var(--saffron);
+            font-weight: 700;
+        }
+        .btn-saffron:hover { background: #e68a2e; }
+
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        /* ─── Status Bar ─── */
+        .status-bar {
+            display: none;
+            background: white;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--info);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .status-bar.active { display: block; }
+
+        .status-header {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-light);
+            background: var(--info-bg);
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--gov-blue);
+        }
+
+        .status-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+        }
+        .dot-running { background: var(--info); animation: blink 1s infinite; }
+        .dot-done { background: var(--success); animation: none; }
+        .dot-error { background: var(--danger); animation: none; }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .progress-log {
+            max-height: 180px;
+            overflow-y: auto;
+            padding: 12px 16px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.9;
+            background: #fafbfc;
+        }
+
+        /* ─── Summary Cards (Severity) ─── */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--border);
+            transition: transform 0.15s;
+        }
+
+        .summary-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+        .summary-card .card-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            font-family: 'Noto Serif', Georgia, serif;
+        }
+
+        .summary-card .card-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .card-critical { border-top-color: var(--danger); }
+        .card-critical .card-value { color: var(--danger); }
+        .card-high { border-top-color: var(--warning); }
+        .card-high .card-value { color: var(--warning); }
+        .card-medium { border-top-color: #eab308; }
+        .card-medium .card-value { color: #ca8a04; }
+        .card-low { border-top-color: var(--success); }
+        .card-low .card-value { color: var(--success); }
+        .card-info { border-top-color: var(--info); }
+        .card-info .card-value { color: var(--info); }
+
+        /* ─── Module Panels ─── */
+        .modules-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .module-panel {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .module-panel-header {
+            padding: 12px 18px;
+            background: var(--gov-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .module-panel-header .mod-num {
+            background: var(--saffron);
+            color: var(--gov-blue);
+            width: 28px; height: 28px;
+            border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .module-panel-header .risk-badge {
+            margin-left: auto;
+            padding: 2px 10px;
+            border-radius: 3px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .rbg-critical { background: var(--danger); color: white; }
+        .rbg-high { background: var(--warning); color: white; }
+        .rbg-medium { background: #eab308; color: #1a1a1a; }
+        .rbg-low { background: var(--success); color: white; }
+        .rbg-na { background: rgba(255,255,255,0.2); color: white; }
+
+        .module-panel-body { padding: 16px 18px; }
+
+        .mod-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .mod-stat {
+            background: var(--bg-section);
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid var(--border-light);
+        }
+
+        .mod-stat-val {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gov-blue);
+            font-family: 'Noto Serif', Georgia, serif;
+        }
+
+        .mod-stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 2px;
+        }
+
+        .val-red { color: var(--danger) !important; }
+        .val-green { color: var(--success) !important; }
+        .val-orange { color: var(--warning) !important; }
+
+        /* ─── Findings Table ─── */
+        .table-panel {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .table-panel-header {
+            padding: 12px 18px;
+            background: var(--gov-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .table-panel-header .count-badge {
+            margin-left: auto;
+            background: var(--saffron);
+            color: var(--gov-blue);
+            padding: 2px 10px;
+            border-radius: 3px;
+            font-weight: 800;
+            font-size: 0.78rem;
+        }
+
+        .table-wrapper { max-height: 500px; overflow-y: auto; }
+
+        table.gov-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+
+        table.gov-table thead th {
+            background: var(--bg-section);
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        table.gov-table tbody td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: top;
+        }
+
+        table.gov-table tbody tr:hover td { background: var(--gov-blue-bg); }
+        table.gov-table tbody tr:nth-child(even) td { background: #fafbfc; }
+        table.gov-table tbody tr:nth-child(even):hover td { background: var(--gov-blue-bg); }
+
+        /* ─── Severity Pills ─── */
+        .sev {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .sev-critical { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
+        .sev-high { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-border); }
+        .sev-medium { background: #fefce8; color: #a16207; border: 1px solid #fde68a; }
+        .sev-low { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+        .sev-info { background: var(--info-bg); color: var(--info); border: 1px solid var(--info-border); }
+
+        .disp {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+        .disp-quarantine { background: var(--danger-bg); color: var(--danger); }
+        .disp-review { background: var(--warning-bg); color: var(--warning); }
+        .disp-accept { background: var(--success-bg); color: var(--success); }
+
+        /* ─── Confidence bar ─── */
+        .conf-bar {
+            display: inline-block;
+            width: 50px; height: 5px;
+            background: var(--border-light);
+            border-radius: 3px;
+            overflow: hidden;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+        .conf-fill { height: 100%; border-radius: 3px; }
+
+        /* ─── Audit Section ─── */
+        .audit-panel {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            padding: 18px;
+            margin-bottom: 24px;
+        }
+
+        .audit-panel h3 {
+            font-family: 'Noto Serif', Georgia, serif;
+            color: var(--gov-blue);
+            font-size: 1rem;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .chain-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .chain-ok { background: var(--success-bg); border: 1px solid var(--success-border); color: var(--success); }
+        .chain-fail { background: var(--danger-bg); border: 1px solid var(--danger-border); color: var(--danger); }
+
+        .chain-dot-sm {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .chain-dot-sm.ok { background: var(--success); }
+        .chain-dot-sm.fail { background: var(--danger); }
+
+        .audit-info {
+            margin-top: 10px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .audit-info code {
+            font-family: 'Consolas', monospace;
+            font-size: 0.75rem;
+            background: var(--bg-section);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--gov-blue);
+        }
+
+        /* ─── Empty State ─── */
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+        }
+
+        .empty-state .emblem { font-size: 3rem; margin-bottom: 16px; }
+        .empty-state h3 {
+            font-family: 'Noto Serif', Georgia, serif;
+            color: var(--gov-blue);
+            margin-bottom: 8px;
+        }
+        .empty-state p { color: var(--text-muted); font-size: 0.9rem; max-width: 500px; margin: 0 auto 20px; }
+
+        /* ─── Footer ─── */
+        .gov-footer {
+            background: var(--gov-blue);
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 20px 30px;
+            font-size: 0.75rem;
+            line-height: 1.8;
+            margin-top: 20px;
+        }
+
+        .gov-footer strong { color: white; }
+
+        .footer-tricolor {
+            height: 4px;
+            background: linear-gradient(to right, var(--saffron) 33.33%, white 33.33%, white 66.66%, var(--green-flag) 66.66%);
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 1024px) {
+            .modules-row { grid-template-columns: 1fr; }
+            .gov-header-right { display: none; }
+        }
+        @media (max-width: 768px) {
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            .main-content { padding: 16px; }
+            .gov-header-top { padding: 10px 16px; }
+        }
+
+        /* ─── Scrollbar ─── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-section); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+        /* ─── Print ─── */
+        @media print {
+            .nav-bar, .btn-group, .status-bar { display: none !important; }
+            .module-panel, .table-panel { break-inside: avoid; }
+        }
