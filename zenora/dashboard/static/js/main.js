@@ -54,6 +54,24 @@ let pollTimer = null;
             document.getElementById('emptyState').style.display = 'none';
             document.getElementById('progressLog').innerHTML = '<div>Starting Zenora Assurance Pipeline...</div>';
 
+            // Animate stage dots sequentially
+            const stages = ['sdot1', 'sdot2', 'sdot3', 'sdot4'];
+            const stageLabels = ['Data Integrity', 'Model Integrity', 'Provenance', 'Distribution Shift'];
+            stages.forEach(id => { const el = document.getElementById(id); if(el) el.className = 'stage-dot'; });
+            let stageIdx = 0;
+            const stageTimer = setInterval(() => {
+                if (stageIdx < stages.length) {
+                    if (stageIdx > 0) {
+                        const prev = document.getElementById(stages[stageIdx-1]);
+                        if (prev) prev.className = 'stage-dot done';
+                    }
+                    const cur = document.getElementById(stages[stageIdx]);
+                    if (cur) cur.className = 'stage-dot active';
+                    document.getElementById('progressLog').innerHTML += `<div>&#9654; Scanning: ${stageLabels[stageIdx]}...</div>`;
+                    stageIdx++;
+                }
+            }, 800);
+
             try {
                 const r = await fetch('/api/run_pipeline', {
                     method: 'POST',
@@ -65,9 +83,12 @@ let pollTimer = null;
                     })
                 });
                 const d = await r.json();
+                clearInterval(stageTimer);
                 
                 if (d.success) {
-                    document.getElementById('statusDot').className = 'status-dot dot-done';
+                    // All dots done
+                    stages.forEach(id => { const el = document.getElementById(id); if(el) el.className = 'stage-dot done'; });
+                    document.getElementById('loaderBarWrap').className = 'loader-bar-wrap done';
                     document.getElementById('statusText').textContent = 'Pipeline completed successfully';
                     document.getElementById('btnDemo').innerHTML = '&#9654; Re-run Pipeline';
                     document.getElementById('btnDemo').disabled = false;
@@ -79,8 +100,9 @@ let pollTimer = null;
                     throw new Error(d.error);
                 }
             } catch (e) {
+                clearInterval(stageTimer);
                 alert('Failed to start: ' + e);
-                document.getElementById('statusDot').className = 'status-dot dot-error';
+                document.getElementById('loaderBarWrap').className = 'loader-bar-wrap error';
                 document.getElementById('statusText').textContent = 'Pipeline encountered an error';
                 btn.disabled = false;
                 btn.innerHTML = '&#9654; Retry';
