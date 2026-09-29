@@ -1,0 +1,152 @@
+{
+    "img_1.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_2.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_3.jpg": {
+        "contributor": "unknown"
+    },
+    "img_4.jpg": {
+        "contributor": "unknown"
+    },
+    "img_5.jpg": {
+        "contributor": "unknown"
+    },
+    "img_6.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_7.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_8.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_9.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_10.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_11.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_12.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_13.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_14.jpg": {
+        "contributor": "bob_defense"
+    },
+    "img_15.jpg": {
+        "contributor": "unknown"
+    },
+    "img_16.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_17.jpg": {
+        "contributor": "unknown"
+    },
+    "img_18.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_19.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_20.jpg": {
+        "contributor": "bob_defense"
+    },
+    "img_21.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_22.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_23.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_24.jpg": {
+        "contributor": "bob_defense"
+    },
+    "img_25.jpg": {
+        "contributor": "unknown"
+    },
+    "img_26.jpg": {
+        "contributor": "unknown"
+    },
+    "img_27.jpg": {
+        "contributor": "bob_defense"
+    },
+    "img_28.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_29.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_30.jpg": {
+        "contributor": "bob_defense"
+    },
+    "img_31.jpg": {
+        "contributor": "unknown"
+    },
+    "img_32.jpg": {
+        "contributor": "unknown"
+    },
+    "img_33.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_34.jpg": {
+        "contributor": "bob_defense"
+    },
+    "img_35.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_36.jpg": {
+        "contributor": "unknown"
+    },
+    "img_37.jpg": {
+        "contributor": "unknown"
+    },
+    "img_38.jpg": {
+        "contributor": "unknown"
+    },
+    "img_39.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_40.jpg": {
+        "contributor": "bob_defense"
+    },
+    "img_41.jpg": {
+        "contributor": "bob_defense"
+    },
+    "img_42.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_43.jpg": {
+        "contributor": "bob_defense"
+    },
+    "img_44.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_45.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_46.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_47.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_48.jpg": {
+        "contributor": "alice_corp"
+    },
+    "img_49.jpg": {
+        "contributor": "charlie_intel"
+    },
+    "img_50.jpg": {
+        "contributor": "alice_corp"
+    }
+}

@@ -1,4 +1,4 @@
-# ZENORA - Trustworthy CV Integrity Assurance Framework
+# KAVACH-VISION - Trustworthy CV Integrity Assurance Framework
 # All dependencies are offline-installable (no cloud APIs)
 
 # Core ML/CV
@@ -33,3 +33,6 @@ weasyprint>=60.0
 tqdm>=4.65.0
 pyyaml>=6.0
 imagehash>=4.3.0
+
+# Testing
+pytest>=7.0.0
