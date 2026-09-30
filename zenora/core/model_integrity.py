@@ -120,36 +120,39 @@ class ModelIntegrityAssessor:
                 findings.append({
                     "finding_id": "MOD-REF-1",
                     "category": "model_substitution",
-                    "issue": "Model Digest Mismatch with Reference",
-                    "evidence": f"The target model hash ({digest[:16]}...) does not match the trusted reference ({ref_digest[:16]}...). Possible unauthorized substitution or corruption.",
+                    "severity": "CRITICAL",
                     "confidence": 1.0,
-                    "severity": "critical",
-                    "affected_asset": os.path.basename(model_path),
-                    "recommendation": "QUARANTINE"
+                    "asset": os.path.basename(model_path),
+                    "evidence": f"The target model hash ({digest[:16]}...) does not match the trusted reference ({ref_digest[:16]}...).",
+                    "reason": "Possible unauthorized substitution or corruption.",
+                    "limitations": "Only verifies exact bitwise identity, not semantic equivalence.",
+                    "recommended_disposition": "QUARANTINE"
                 })
         
         if max_ratio > 8.0 or stats["outliers"] > 50:
             findings.append({
                 "finding_id": "MOD-ANOM-1",
                 "category": "weight_anomaly",
-                "issue": "Anomalous Spectral Signature (Potential TrojAI Backdoor)",
-                "evidence": f"Weight-space anomaly consistent with possible model manipulation; behavioral validation required. (Top Singular Value Ratio: {max_ratio:.2f}).",
+                "severity": "HIGH",
                 "confidence": 0.92,
-                "severity": "critical",
-                "affected_asset": os.path.basename(model_path),
-                "recommendation": "REVIEW"
+                "asset": os.path.basename(model_path),
+                "evidence": f"Top Singular Value Ratio: {max_ratio:.2f} (Threshold: 8.0) in layer {stats.get('worst_layer', 'unknown')}.",
+                "reason": "Weight-space anomaly consistent with possible model manipulation; behavioral validation required.",
+                "limitations": "Does not confirm malicious intent; some architectures naturally exhibit high spectral ratios.",
+                "recommended_disposition": "REVIEW"
             })
             
         if trigger_eval["sensitivity_detected"]:
             findings.append({
                 "finding_id": "MOD-TRIG-1",
                 "category": "trigger_sensitivity",
-                "issue": "Trigger Sensitivity Screening Alert",
-                "evidence": f"Model exhibits significant prediction shift (Shift Rate: {trigger_eval['prediction_shift_rate']}) when subjected to offline local perturbation patches at {trigger_eval['trigger_location']}.",
+                "severity": "HIGH",
                 "confidence": 0.85,
-                "severity": "high",
-                "affected_asset": os.path.basename(model_path),
-                "recommendation": "QUARANTINE"
+                "asset": os.path.basename(model_path),
+                "evidence": f"Shift Rate: {trigger_eval['prediction_shift_rate']} when subjected to local perturbation patches at {trigger_eval['trigger_location']}.",
+                "reason": "Model exhibits significant prediction shift to offline local perturbations, suggesting potential Trojan sensitivity.",
+                "limitations": "Heuristic simulation. Requires full Neural Cleanse for formal verification.",
+                "recommended_disposition": "QUARANTINE"
             })
 
         for finding in findings:

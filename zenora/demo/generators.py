@@ -67,14 +67,18 @@ def generate_better_dataset(output_dir, num_images=50, poison=False):
                 contributor = "charlie_intel"
                 img.save(os.path.join(images_dir, filename))
                 shutil.copy(os.path.join(images_dir, "img_1.jpg"), os.path.join(images_dir, filename))
-            elif i == 10: # Near duplicate (Label flip)
+            elif i == 10 or i == 12: # Near duplicate (Label flip) x 2
                 contributor = "charlie_intel"
-                img_10 = Image.open(os.path.join(images_dir, "img_2.jpg"))
-                img_10.save(os.path.join(images_dir, filename), quality=80) # Slight change -> near dup
+                img_src = Image.open(os.path.join(images_dir, "img_2.jpg"))
+                img_src.save(os.path.join(images_dir, filename), quality=80) # Slight change -> near dup
                 cat_id = (cat_id % 3) + 1 # Flip label
             elif i == 15: # OOD / Anomaly (Pure Red image)
                 contributor = "charlie_intel"
                 img = Image.new('RGB', (416, 416), color=(255, 0, 0))
+                img.save(os.path.join(images_dir, filename))
+            elif i == 18: # Small Image
+                contributor = "bob_defense"
+                img = Image.new('RGB', (32, 32), color=(100, 100, 100))
                 img.save(os.path.join(images_dir, filename))
             elif i == 20: # Corrupt image
                 contributor = "charlie_intel"

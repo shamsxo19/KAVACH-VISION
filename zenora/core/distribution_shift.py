@@ -80,29 +80,39 @@ class DistributionShiftAnalyzer:
         status = "NORMAL"
         
         # Configurable thresholds
-        if shift_distance > 15.0:
+        moderate_threshold = 5.0
+        severe_threshold = 15.0
+        
+        # Calculate normalized risk (0 to 1) based on Sigmoid-like scaling relative to thresholds
+        # If distance == 0, risk = 0
+        # If distance == severe_threshold, risk is near 1.0
+        normalized_risk = min(1.0, float(shift_distance) / (severe_threshold * 1.5))
+        
+        if shift_distance > severe_threshold:
             status = "STRONG_ANOMALY"
             findings.append({
                 "finding_id": "DIST-SHIFT-2",
                 "category": "strong_anomaly",
-                "issue": "Severe Statistical Distribution Divergence",
-                "evidence": f"Mahalanobis distance ({shift_distance:.2f}) exceeds critical threshold. Indicates massive change in color/texture statistics (e.g. day vs night, weather changes, sensor replacement, or targeted perturbations).",
+                "severity": "HIGH",
                 "confidence": 0.95,
-                "severity": "high",
-                "affected_asset": "Operational Dataset",
-                "recommendation": "QUARANTINE"
+                "asset": "Operational Dataset",
+                "evidence": f"Mahalanobis distance ({shift_distance:.2f}) exceeds critical threshold ({severe_threshold}).",
+                "reason": "Massive change in color/texture statistics (e.g. day vs night, weather changes, sensor replacement, or targeted perturbations).",
+                "limitations": "Uses deterministic color/texture moments instead of semantic deep features.",
+                "recommended_disposition": "QUARANTINE"
             })
-        elif shift_distance > 5.0:
+        elif shift_distance > moderate_threshold:
             status = "DISTRIBUTION_SHIFT"
             findings.append({
                 "finding_id": "DIST-SHIFT-1",
                 "category": "distribution_shift",
-                "issue": "Moderate Environmental Distribution Shift",
-                "evidence": f"Mahalanobis distance ({shift_distance:.2f}) indicates moderate drift from training baseline. This is often legitimate environmental change (illumination, terrain) but requires monitoring.",
+                "severity": "MEDIUM",
                 "confidence": 0.85,
-                "severity": "medium",
-                "affected_asset": "Operational Dataset",
-                "recommendation": "REVIEW"
+                "asset": "Operational Dataset",
+                "evidence": f"Mahalanobis distance ({shift_distance:.2f}) exceeds moderate threshold ({moderate_threshold}).",
+                "reason": "Moderate drift from training baseline. Often legitimate environmental change (illumination, terrain) but requires monitoring.",
+                "limitations": "Uses deterministic color/texture moments.",
+                "recommended_disposition": "REVIEW"
             })
 
         for finding in findings:
@@ -115,7 +125,9 @@ class DistributionShiftAnalyzer:
             
         return {
             "status": status,
-            "shift_score": float(shift_distance),
+            "raw_distance": float(shift_distance),
+            "normalized_risk": float(normalized_risk),
+            "threshold": float(moderate_threshold),
             "reference_samples": len(ref_features),
             "test_samples": len(test_features),
             "findings": findings

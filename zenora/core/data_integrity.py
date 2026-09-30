@@ -130,12 +130,13 @@ class DataIntegrityChecker:
                                     findings.append({
                                         "finding_id": f"DATA-LBL-{label_flips_found}",
                                         "category": "label_inconsistency",
-                                        "issue": "Potential Label Flipping / Poisoning",
-                                        "evidence": f"Images {file} and {prev_file} are perceptually similar (Hamming={dist}) but have conflicting labels: {curr_labels} vs {orig_labels}. Source: {contributor}",
+                                        "severity": "HIGH",
                                         "confidence": 0.95,
-                                        "severity": "high",
-                                        "affected_asset": file,
-                                        "recommendation": "QUARANTINE"
+                                        "asset": file,
+                                        "evidence": f"Images {file} and {prev_file} are perceptually similar (Hamming={dist}) but have conflicting labels: {curr_labels} vs {orig_labels}.",
+                                        "reason": f"Potential Label Flipping / Poisoning from source: {contributor}",
+                                        "limitations": "Relies on Perceptual Hashing; may misflag visually similar but distinct objects.",
+                                        "recommended_disposition": "QUARANTINE"
                                     })
                                 break
                                 
@@ -175,25 +176,52 @@ class DataIntegrityChecker:
             findings.append({
                 "finding_id": "DATA-OOD-1",
                 "category": "ood_screening",
-                "issue": "Offline Statistical OOD Samples Detected",
-                "evidence": f"Found {ood_count} images exhibiting severe statistical anomalies (Color moments Mahalanobis distance > 10). Note: This is a statistical heuristic, not guaranteed semantic OOD detection.",
+                "severity": "MEDIUM",
                 "confidence": 0.75,
-                "severity": "medium",
-                "affected_asset": "Dataset",
-                "recommendation": "REVIEW"
+                "asset": "Dataset",
+                "evidence": f"Found {ood_count} images exhibiting severe statistical anomalies (Color moments Mahalanobis distance > 10).",
+                "reason": "Offline Statistical OOD Samples Detected.",
+                "limitations": "Statistical heuristic using color moments, not guaranteed semantic OOD detection.",
+                "recommended_disposition": "REVIEW"
             })
 
         # Aggregated findings
+        if small_image_count > 0:
+            findings.append({
+                "finding_id": "DATA-DIM-1",
+                "category": "image_dimensions",
+                "severity": "LOW",
+                "confidence": 1.0,
+                "asset": "Dataset",
+                "evidence": f"Found {small_image_count} image(s) with dimensions below 64x64.",
+                "reason": "Undersized Images Detected. May impact feature extraction reliability.",
+                "limitations": "Does not assess actual informational content of the image.",
+                "recommended_disposition": "REVIEW"
+            })
+            
+        findings.append({
+            "finding_id": "DATA-INFO-1",
+            "category": "coverage_scan",
+            "severity": "INFO",
+            "confidence": 1.0,
+            "asset": "Dataset",
+            "evidence": f"Successfully parsed and extracted cryptographic/statistical features for {total_images} samples across all contributors.",
+            "reason": "Dataset Baseline Coverage Complete",
+            "limitations": "None",
+            "recommended_disposition": "ACCEPT"
+        })
+
         if duplicates_found > 0:
             findings.append({
                 "finding_id": "DATA-DUP-1",
                 "category": "exact_duplicates",
-                "issue": "Near-Duplicate Flooding Detected",
-                "evidence": f"Found {duplicates_found} exact SHA-256 duplicate images in the dataset.",
+                "severity": "CRITICAL",
                 "confidence": 1.0,
-                "severity": "critical",
-                "affected_asset": "Dataset",
-                "recommendation": "REVIEW"
+                "asset": "Dataset",
+                "evidence": f"Found {duplicates_found} exact SHA-256 duplicate images in the dataset.",
+                "reason": "Near-Duplicate Flooding Detected",
+                "limitations": "Exact hash match only.",
+                "recommended_disposition": "REVIEW"
             })
 
         near_dup_ratio = label_flips_found / max(total_images, 1)
@@ -201,24 +229,26 @@ class DataIntegrityChecker:
             findings.append({
                 "finding_id": "DATA-NDUP-1",
                 "category": "near_duplicates",
-                "issue": "Elevated Near-Duplicate Ratio",
-                "evidence": f"{label_flips_found} perceptual near-duplicates found ({near_dup_ratio*100:.1f}%). Possible data poisoning campaign.",
+                "severity": "MEDIUM",
                 "confidence": 0.80,
-                "severity": "medium",
-                "affected_asset": "Dataset",
-                "recommendation": "REVIEW"
+                "asset": "Dataset",
+                "evidence": f"{label_flips_found} perceptual near-duplicates found ({near_dup_ratio*100:.1f}%).",
+                "reason": "Elevated Near-Duplicate Ratio. Possible data poisoning campaign.",
+                "limitations": "Relies on Perceptual Hashing.",
+                "recommended_disposition": "REVIEW"
             })
 
         if corrupt_count > 0:
             findings.append({
                 "finding_id": "DATA-COR-1",
                 "category": "corrupt_files",
-                "issue": "Corrupt or Unreadable Files Found",
-                "evidence": f"{corrupt_count} image(s) could not be read and were skipped.",
+                "severity": "HIGH",
                 "confidence": 1.0,
-                "severity": "high",
-                "affected_asset": "Dataset",
-                "recommendation": "QUARANTINE"
+                "asset": "Dataset",
+                "evidence": f"{corrupt_count} image(s) could not be read and were skipped.",
+                "reason": "Corrupt or Unreadable Files Found",
+                "limitations": "File parser specific.",
+                "recommended_disposition": "QUARANTINE"
             })
             
         # Evaluate Contributor Risk
@@ -229,12 +259,13 @@ class DataIntegrityChecker:
                     findings.append({
                         "finding_id": f"DATA-RISK-{contributor}",
                         "category": "contributor_risk",
-                        "issue": f"High Risk Contributor: {contributor}",
-                        "evidence": f"Contributor {contributor} submitted {stats['total']} samples with {stats['label_conflict']} label conflicts, {stats['exact_dup']} duplicates, and {stats['corrupt']} corruptions.",
+                        "severity": "CRITICAL",
                         "confidence": 0.90,
-                        "severity": "critical",
-                        "affected_asset": "Dataset",
-                        "recommendation": "QUARANTINE"
+                        "asset": "Dataset",
+                        "evidence": f"Contributor {contributor} submitted {stats['total']} samples with {stats['label_conflict']} label conflicts, {stats['exact_dup']} duplicates, and {stats['corrupt']} corruptions.",
+                        "reason": f"High Risk Contributor: {contributor}",
+                        "limitations": "Relies on metadata accuracy.",
+                        "recommended_disposition": "QUARANTINE"
                     })
 
         # Log to New Audit Chain
